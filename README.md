@@ -58,5 +58,4 @@ fg_ = df.iloc[0]['fg']
 
 # transform
 background, foreground = prepare_b64_image(bg_, fg_)
-
 ```
