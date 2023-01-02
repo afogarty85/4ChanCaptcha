@@ -25,6 +25,7 @@ import cv2
 import base64
 import numpy as np
 import pandas as pd
+from PIL import Image
 
 
 # b64 processing
@@ -37,15 +38,12 @@ def prepare_b64_image(background, foreground):
     # bg
     background = base64.b64decode(str(background))
     background = np.frombuffer(background, np.uint8)
-    background = cv2.imdecode(background, cv2.IMREAD_COLOR)
+    background = cv2.imdecode(background, cv2.IMREAD_UNCHANGED)
 
     # fg
     foreground = base64.b64decode(str(foreground))
     foreground = np.frombuffer(foreground, np.uint8)
-    foreground = cv2.imdecode(foreground, cv2.IMREAD_COLOR)
-
-    # we need its alpha channel
-    foreground = cv2.cvtColor(foreground, cv2.COLOR_RGB2RGBA)
+    foreground = cv2.imdecode(foreground, cv2.IMREAD_UNCHANGED)
     return background, foreground
 
 
@@ -58,4 +56,8 @@ fg_ = df.iloc[0]['fg']
 
 # transform
 background, foreground = prepare_b64_image(bg_, fg_)
+
+# show image
+Image.fromarray(np.uint8(background))
+Image.fromarray(np.uint8(foreground))
 ```
