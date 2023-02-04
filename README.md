@@ -1,24 +1,51 @@
-# 4ChanCaptchaDataSet
+# 4ChanCaptcha
 
 
-This repository contains a 4chan captcha data set amounting to 7181 foreground and background images,
-along with procedures needed to produce or extend the captcha data set on your own.
+This repository contains a 4chan captcha data set amounting to 16242 foreground and background images and the [procedures](/base64_captcha_scraper/base64_generator.py) needed to produce or extend the captcha data set on your own.
 
-Extensions of this project are forthcoming, which include:
-
-1. Hyperparameter turning of opencv2 processing methods to remove noise and extract characters with accuracy
-2. Pytesseract training procedures to read 4chan captcha
-3. An ML model that predicts the right answer
-
-
-## Sample Background and Foreground Image
 
 <img title="Background" alt="Background" src="/sample_images/background.png">
 
 <img title="Foreground" alt="Foreground" src="/sample_images/foreground.png">
 
 
-## Some Starting Code
+## Included Data
+
+1. [base64 dataset](captcha/dataset/raw_base64_dataset.csv) -- the raw data amounting to 16242 foreground and background images
+
+2. [fourCharacters](captcha/dataset/fourCharacters/) -- a set of extracted characters, derived from `Character Extractor` below.
+
+
+It also contains the following modules that aim to exploit the data:
+
+## Character Extractor
+
+This module is the main workhorse which populates the foundation necessary to generate synthetic training data. Using a set of hyperparameters derived from [optimize_character_extractor](captcha/character_extractor/optimize_character_extractor.py), [character_extractor.py](captcha/character_extractor/character_extractor.py) isolates and extracts individual characters and digits from the image, the atomic unit of our synthetic training data generator.
+
+## Classify Character
+
+[classify_character.py](captcha/classify_character/classify_character.py) is a straight forward TorchVision implementation of ResNet18 that classifies extracted characters.
+
+## Generate Synthetic Data Set
+
+[generate_synthetic_dataset.py](captcha/generate_synthetic_dataset/generate_synthetic_dataset.py) aims to artificially generate 4chan captchas the main image model of this repo, for example:
+
+<img title="Synthetic Captcha" alt="Synthetic Captcha" src="/sample_images/synthetic.png">
+
+
+## Train Synthetic Data Set
+
+[train_synthetic_dataset.py](captcha/train_synthetic_dataset/train_synthetic_dataset.py) uses a [CRNN](https://arxiv.org/pdf/1507.05717.pdf) model to train on the synthetically generated data set. It also includes a small prediction function as well as a lightly modified model to generate an ONNX model capable of running in the browser.
+
+
+## CRNN Browser Powered Inference
+
+The ultimate consequence of this repository is a capable model that is agile enough to be run from your local browser. Using `Tampermonkey` or `Requestly`, you can load the model ([onnx_model.onnx](captcha/browser_inference/onnx_model.onnx)) into your own browser using [model_testing_browser](captcha/browser_inference/browser_inference.js).
+
+<img title="Browser Inference" alt="Browser Inference" src="/sample_images/browser_out.png">
+
+
+### Some Starting Code
 
 ```
 import cv2
