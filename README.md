@@ -28,19 +28,19 @@ This module is the main workhorse which populates the foundation necessary to ge
 
 ## Generate Synthetic Data Set
 
-[generate_synthetic_dataset.py](captcha/generate_synthetic_dataset/generate_synthetic_dataset.py) aims to artificially generate 4chan captchas the main image model of this repo, for example:
+[generate_synthetic_dataset.py](captcha/generate_synthetic_dataset/generate_synthetic_dataset.py) aims to artificially generate 4chan captchas for the main image model to train on, for example:
 
 <img title="Synthetic Captcha" alt="Synthetic Captcha" src="/sample_images/synthetic.png">
 
 
 ## Train Synthetic Data Set
 
-[train_synthetic_dataset.py](captcha/train_synthetic_dataset/train_synthetic_dataset.py) uses a [CRNN](https://arxiv.org/pdf/1507.05717.pdf) model to train on the synthetically generated data set. It also includes a small prediction function as well as a lightly modified model to generate an ONNX model capable of running in the browser.
+[train_synthetic_dataset.py](captcha/train_synthetic_dataset/train_synthetic_dataset.py) uses a [CRNN](https://arxiv.org/pdf/1507.05717.pdf) model to train on the synthetically generated data set. It also includes a small prediction function as well as a lightly modified model to generate an ONNX export model capable of running in the browser.
 
 
 ## CRNN Browser Powered Inference
 
-The ultimate consequence of this repository is a capable model that is agile enough to be run from your local browser. Using `Tampermonkey` or `Requestly`, you can load the model ([onnx_model.onnx](captcha/browser_inference/onnx_model.onnx)) into your own browser using [model_testing_browser](captcha/browser_inference/browser_inference.js).
+The ultimate consequence of this repository is a capable model that is agile enough to be run from your local browser. Using `Tampermonkey` or `Requestly`, you can load the model ([onnx_model.onnx](captcha/browser_inference/onnx_model.onnx)) into your own browser using [browser_inference](captcha/browser_inference/browser_inference.js).
 
 <img title="Browser Inference" alt="Browser Inference" src="/sample_images/browser_out.png">
 
